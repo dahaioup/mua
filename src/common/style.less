@@ -1,0 +1,28 @@
+.pos(static, @x: 0, @y: 0, @w: 0, @h: 0){
+    position: static;
+}
+.pos(inherit, @x: 0, @y: 0, @w: 0, @h: 0){
+    position: inherit;
+}
+
+.pos(relative, @x: 0, @y: 0, @w: 0, @h: 0){
+    position: relative;
+    left: @x;
+    top: @y;
+}
+
+.pos(fixed, @x: 0, @y: 0, @w: 100vw, @h: 100vh){
+    position: fixed;
+    left: @x;
+    top: @y;
+    width: @w;
+    height: @h;
+}
+
+.pos(@p: absolute, @x: 0, @y: 0, @w: 100%, @h: 100%) when (default()) {
+    position: @p;
+    left: @x;
+    top: @y;
+    width: @w;
+    height: @h;
+}
