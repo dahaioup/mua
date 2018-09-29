@@ -8,60 +8,10 @@
       <!--滚动歌词-->
       <div class="lyric">
         <ul id="lyric">
-          <li data-no="0" class="lrc-item">幽静窗外满地片片寒花</li>
-          <li data-no="1" class="lrc-item">一瞬间永恒的时差</li>
-          <li data-no="2" class="lrc-item">窝在棉被里</li>
-          <li data-no="3" class="lrc-item">倾听踏雪听沈默的声音</li>
-          <li data-no="4" class="lrc-item">飘雪藏永恒的身影</li>
-          <li data-no="5" class="lrc-item">雪树下等你</li>
-          <li data-no="6" class="lrc-item">&nbsp;</li>
-          <li data-no="7" class="lrc-item">在一瞬间有一百万个可能</li>
-          <li data-no="8" class="lrc-item">该向前走或者继续等</li>
-          <li data-no="9" class="lrc-item">这冬夜里有百万个不确定</li>
-          <li data-no="10" class="lrc-item">渐入深夜或期盼天明</li>
-          <li data-no="11" class="lrc-item">云空的泪一如冰凌结晶了</li>
-          <li data-no="12" class="lrc-item">成雪花垂</li>
-          <li data-no="13" class="lrc-item">这一瞬间有一百万个可能</li>
-          <li data-no="14" class="lrc-item">窝进棉被或面对寒冷</li>
-          <li data-no="15" class="lrc-item">&nbsp;</li>
-          <li data-no="16" class="lrc-item">幽静寒风吹来一缕声音</li>
-          <li data-no="17" class="lrc-item">一瞬间看着你走近</li>
-          <li data-no="18" class="lrc-item">暖了我冬心</li>
-          <li data-no="19" class="lrc-item">倾听踏雪听沈默的声音</li>
-          <li data-no="20" class="lrc-item">飘雪藏永恒的身影</li>
-          <li data-no="21" class="lrc-item">雪树下等你</li>
-          <li data-no="22" class="lrc-item">&nbsp;</li>
-          <li data-no="23" class="lrc-item">在一瞬间有一百万个可能</li>
-          <li data-no="24" class="lrc-item">该向前走或者继续等</li>
-          <li data-no="25" class="lrc-item">这冬夜里有百万个不确定</li>
-          <li data-no="26" class="lrc-item">渐入深夜或期盼天明</li>
-          <li data-no="27" class="lrc-item">云空的泪一如冰凌结晶了</li>
-          <li data-no="28" class="lrc-item">成雪花垂</li>
-          <li data-no="29" class="lrc-item">这一瞬间有一百万个可能</li>
-          <li data-no="30" class="lrc-item">窝进棉被或面对寒冷</li>
-          <li data-no="31" class="lrc-item">&nbsp;</li>
-          <li data-no="32" class="lrc-item">那晚上会是哪个瞬间</li>
-          <li data-no="33" class="lrc-item">说好的爱会不会改变</li>
-          <li data-no="34" class="lrc-item">而你让我徘徊在千里之外</li>
-          <li data-no="35" class="lrc-item">yeah你让我等了好久baby</li>
-          <li data-no="36" class="lrc-item">突然间那是哪个瞬间</li>
-          <li data-no="37" class="lrc-item">你终於出现就是那个瞬间</li>
-          <li data-no="38" class="lrc-item">等了好久忍不住伸手那个瞬间</li>
-          <li data-no="39" class="lrc-item">&nbsp;</li>
-          <li data-no="40" class="lrc-item">在一瞬间有一百万个可能</li>
-          <li data-no="41" class="lrc-item">该向前走或者继续等</li>
-          <li data-no="42" class="lrc-item">这深夜里有百万个不确定</li>
-          <li data-no="43" class="lrc-item">渐入冬林或走向街灯</li>
-          <li data-no="44" class="lrc-item">云空的泪一如冰凌结晶了</li>
-          <li data-no="45" class="lrc-item">成雪花垂</li>
-          <li data-no="46" class="lrc-item">&nbsp;</li>
-          <li data-no="47" class="lrc-item">这一瞬间有一百万个可能</li>
-          <li data-no="48" class="lrc-item">暖这冬心或面对寒冷</li>
-          <li data-no="49" class="lrc-item">该向前走或者继续等</li>
-          <li data-no="50" class="lrc-item">渐入冬林或走向街灯</li>
-          <li data-no="51" class="lrc-item">窝进棉被或面对寒冷</li>
-          <li data-no="52" class="lrc-item">暖这冬心或面对寒冷</li>
-          <li data-no="53" class="lrc-item">&nbsp;</li>
+          <li v-for="(value,key,index) in lyric" :key="index" data-no="index" class="lrc-item">
+            <p v-if="value===''">&nbsp;</p>
+            <p v-else>{{value}}</p>
+          </li>
         </ul>
       </div>
       <div id="music-info" title="点击查看歌曲信息"></div>
@@ -69,7 +19,11 @@
 </template>
 <script>
 export default {
-  name: "Player"
+  data() {
+    return {
+      lyric: this.$store.state.player.lyric
+    };
+  }
 };
 </script>
 <style lang="less" scoped>

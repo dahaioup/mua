@@ -60,20 +60,6 @@ export default {
         url_id: 569214126
       },
       {
-        album: "往后余生",
-        artist: "王贰浪",
-        id: 571338279,
-        lyric_id: 571338279,
-        name: "往后余生",
-        pic:
-          "http://p1.music.126.net/hTiVEeQTUSsc-YGF3o6ItQ==/109951163337847600.jpg?param=300y300",
-        pic_id: null,
-        source: "netease",
-        url:
-          "http://m7.music.126.net/20180927182029/f3e176c2358adf8bae2d50939951f6e7/ymusic/9ddc/b10e/919e/2ef50b0473f7f2cce3193ed620898cd7.mp3",
-        url_id: 571338279
-      },
-      {
         album: "中国新说唱 第3期",
         artist: "艾热",
         id: 1296583188,
@@ -100,8 +86,7 @@ export default {
         url:
           "http://m7.music.126.net/20180927182301/9666ae1a73f17e6a7b1ff6449afb1ac5/ymusic/71d1/2443/0839/8684ed9cd0d050e078335cf3b53ed85e.mp3",
         url_id: 1294924781
-      },
-      { id: "8", name: "", singer: "", album: "" }
+      }
     ]
   },
   getters: {},

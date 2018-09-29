@@ -3,10 +3,11 @@
   <div class="footer">
     <div class="container">
       <div class="con-btn">
-        <a href="javascript:;" class="player-btn btn-prev" title="上一首"></a>
-        <a href="javascript:;" class="player-btn btn-play" title="暂停/继续"></a>
-        <a href="javascript:;" class="player-btn btn-next" title="下一首"></a>
-        <a href="javascript:;" class="player-btn btn-order" title="循环控制"></a>
+        <a @click="prevPlay" class="player-btn btn-prev" title="上一首"></a>
+        <a @click="togglePlay" v-if="playing" class="player-btn btn-pause" title="暂停/继续"></a>
+        <a @click="togglePlay" v-else class="player-btn btn-play" title="暂停/继续"></a>
+        <a @click="nextPlay" class="player-btn btn-next" title="下一首"></a>
+        <a class="player-btn" :class="{'btn-order':mode==='order'}" title="循环控制"></a>
       </div>
       <!--class="con-btn"-->
 
@@ -30,22 +31,50 @@
       <!--class="progress"-->
     </div>
     <!--class="container"-->
+    <audio id="audio" ref="audio" @ended="musicEnded"></audio>
   </div>
   <!--class="footer"-->
 </template>
 <script>
 export default {
-  name: "Control"
+  computed: {
+    playing() {
+      return this.$store.getters.getStatus === "playing";
+    },
+    mode(){
+      return this.$store.getters.getMode;
+    }
+  },
+  methods: {
+    musicEnded() {
+      this.$store.dispatch("playEnded");
+    },
+    togglePlay() {
+      this.$store.dispatch("playToggle");
+    },
+    nextPlay() {
+      this.$store.dispatch("playNext");
+    },
+    prevPlay() {
+      this.$store.dispatch("playPrev");
+    }
+  },
+  mounted() {
+    this.$store.dispatch("attachPlayer", this.$refs.audio);
+  },
+  beforeDestroy() {
+    this.$store.dispatch("detachPlayer");
+  }
 };
 </script>
 <style lang="less" scoped>
 /* 宽度约束容器 */
-.container{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* 底部 */
@@ -88,8 +117,16 @@ export default {
   width: 19px;
   height: 20px;
   margin-top: -10px;
+  left: 0;
 }
-
+.btn-pause {
+  background-position: -30px 0;
+  width: 19px;
+  height: 29px;
+  margin-top: -14.5px;
+  left: 36%;
+  margin-left: -10.5px;
+}
 .btn-play {
   width: 19px;
   height: 29px;
