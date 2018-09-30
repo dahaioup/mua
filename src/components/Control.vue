@@ -7,7 +7,7 @@
         <a @click="togglePlay" v-if="playing" class="player-btn btn-pause" title="暂停/继续"></a>
         <a @click="togglePlay" v-else class="player-btn btn-play" title="暂停/继续"></a>
         <a @click="nextPlay" class="player-btn btn-next" title="下一首"></a>
-        <a class="player-btn" :class="{'btn-order':mode==='order'}" title="循环控制"></a>
+        <a v-on:click="toggleMode" class="player-btn btn-order" :class="{'btn-order-list':mode==='list','btn-order-single':mode==='single','btn-order-random':mode==='random'}" title="循环控制"></a>
       </div>
       <!--class="con-btn"-->
 
@@ -41,7 +41,7 @@ export default {
     playing() {
       return this.$store.getters.getStatus === "playing";
     },
-    mode(){
+    mode() {
       return this.$store.getters.getMode;
     }
   },
@@ -57,6 +57,9 @@ export default {
     },
     prevPlay() {
       this.$store.dispatch("playPrev");
+    },
+    toggleMode() {
+      this.$store.dispatch("modeToggle");
     }
   },
   mounted() {
@@ -142,7 +145,6 @@ export default {
   margin-top: -10px;
 }
 .btn-order {
-  background-position: 0 -173px;
   background-size: 450%;
   right: 0;
   width: 25px;

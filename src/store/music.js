@@ -14,7 +14,7 @@ export default {
         pic_id: null,
         source: "netease",
         url:
-          "http://m8.music.126.net/20180927170211/d53bded11a358f0edcca78140bac0e78/ymusic/07fa/a2a1/35ea/732937117d6d0a8c13a81bb40184662e.mp3",
+          "http://m8.music.126.net/20180930155349/553bd53a4f2df91b9b308292740dda41/ymusic/07fa/a2a1/35ea/732937117d6d0a8c13a81bb40184662e.mp3",
         url_id: 574566207
       },
       {
@@ -42,7 +42,7 @@ export default {
         pic_id: null,
         source: "netease",
         url:
-          "http://m8.music.126.net/20180927181320/9a514b9f56bc22d6b4a2bfdb2812741a/ymusic/fc09/ba27/091f/b817b89ea35414a8c08c5ab0b34b3ae1.mp3",
+          "http://m8.music.126.net/20180930160100/50e58db900ad2031a9d59f42e5f80a17/ymusic/fc09/ba27/091f/b817b89ea35414a8c08c5ab0b34b3ae1.mp3",
         url_id: 29722582
       },
       {
@@ -84,11 +84,13 @@ export default {
         pic_id: null,
         source: "netease",
         url:
-          "http://m7.music.126.net/20180927182301/9666ae1a73f17e6a7b1ff6449afb1ac5/ymusic/71d1/2443/0839/8684ed9cd0d050e078335cf3b53ed85e.mp3",
+          "http://m8.music.126.net/20180930160243/91c2ea03e8a980a71fd4bad66e1ab86a/ymusic/71d1/2443/0839/8684ed9cd0d050e078335cf3b53ed85e.mp3",
         url_id: 1294924781
       }
     ]
   },
-  getters: {},
+  getters: {
+    getMusics: state => state.musicList
+  },
   mutations: {}
 };
