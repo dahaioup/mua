@@ -10,12 +10,7 @@ export default {
     mute: false //是否静音(bool)
   },
   getters: {
-    getMusic: state => state.music,
-    getStatus: state => state.status,
-    getMode: state => state.mode,
-    getProgress: state => state.progress,
-    getVolume: state => state.volume,
-    getMute: state => state.mute
+    playing: state => state.status === "playing"
   },
   mutations: {
     setAudio(state, obj) {
@@ -24,7 +19,13 @@ export default {
     setMusic(state, obj) {
       state.music = { ...obj };
       state.audio.src = obj.url;
-      state.audio.load();
+      if (state.audio.src.substring(obj.url.length - 4) === ".mp3") {
+        console.log(state.audio.src);
+        state.audio.load();
+        if ((state.status = "playing")) {
+          state.audio.play();
+        }
+      }
     },
     setStatus(state, obj) {
       if (obj === "") {
@@ -32,10 +33,14 @@ export default {
       }
       if (obj === "pause") {
         state.status = "pause";
-        state.audio.pause();
+        if (state.audio.duration) {
+          state.audio.pause();
+        }
       } else {
         state.status = "playing";
-        state.audio.play();
+        if (state.audio.duration) {
+          state.audio.play();
+        }
       }
     },
     setMode(state, obj) {
@@ -58,13 +63,59 @@ export default {
     detachPlayer({ commit }) {
       commit("setAudio", null);
     },
-    playStart({ commit }, obj) {},
-    playNext({ commit }) {},
-    playPrev({ commit }) {},
-    playEnded({ commit }) {},
-    playToggle({ commit }) {
-      if (!this.getters.getMusic) {
-        commit("setMusic", this.getters.getMusics[2]);
+    playStart({ commit, dispatch, state }, obj) {
+      commit("setMusic", obj);
+      if (!state.music.url) {
+        dispatch("getMusicUrl", { ...state.music });
+      }
+      commit("setStatus", "playing");
+    },
+    playNext({ commit, dispatch, state, getters }) {
+      if (state.music) {
+        commit("setMusic", getters.nextMusic(state.music.index));
+      } else {
+        commit("setMusic", getters.getMusic(0));
+      }
+
+      if (!state.music.url) {
+        dispatch("getMusicUrl", { ...state.music });
+      }
+      commit("setStatus", "playing");
+    },
+    playPrev({ commit, state, getters }) {
+      if (state.music) {
+        commit("setMusic", getters.preMusic(state.music.index));
+      } else {
+        commit("setMusic", getters.getMusic(0));
+      }
+
+      if (!state.music.url) {
+        dispatch("getMusicUrl", { ...state.music });
+      }
+      commit("setStatus", "playing");
+    },
+    playEnded({ dispatch, state, getters }) {
+      //模式:列表循环(list)，随机播放(random)，单曲循环(single)
+      if (state.mode === "single") {
+        dispatch("playUpdate");
+      } else if (state.mode === "random") {
+        dispatch(
+          "playStart",
+          this.getters.getMusic(Math.floor(getters.musicCount * Math.random()))
+        );
+      } else {
+        dispatch("playNext");
+      }
+    },
+    playUpdate({ commit, state, getters }) {
+      commit("setMusic", getters.getMusic(state.music.index));
+    },
+    playToggle({ dispatch, commit, state, getters }) {
+      if (!state.music) {
+        commit("setMusic", getters.getMusic(0));
+        if (!state.music.url) {
+          dispatch("getMusicUrl", { ...state.music });
+        }
       }
       commit("setStatus", "");
     },

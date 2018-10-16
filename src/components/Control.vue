@@ -3,11 +3,11 @@
   <div class="footer">
     <div class="container">
       <div class="con-btn">
-        <a @click="prevPlay" class="player-btn btn-prev" title="上一首"></a>
-        <a @click="togglePlay" v-if="playing" class="player-btn btn-pause" title="暂停/继续"></a>
-        <a @click="togglePlay" v-else class="player-btn btn-play" title="暂停/继续"></a>
-        <a @click="nextPlay" class="player-btn btn-next" title="下一首"></a>
-        <a v-on:click="toggleMode" class="player-btn btn-order" :class="{'btn-order-list':mode==='list','btn-order-single':mode==='single','btn-order-random':mode==='random'}" title="循环控制"></a>
+        <a @click="playPrev" class="player-btn btn-prev" title="上一首"></a>
+        <a @click="playToggle" v-if="playing" class="player-btn btn-pause" title="暂停/继续"></a>
+        <a @click="playToggle" v-else class="player-btn btn-play" title="暂停/继续"></a>
+        <a @click="playNext" class="player-btn btn-next" title="下一首"></a>
+        <a v-on:click="modeToggle" class="player-btn btn-order" :class="{'btn-order-list':mode==='list','btn-order-single':mode==='single','btn-order-random':mode==='random'}" title="循环控制"></a>
       </div>
       <!--class="con-btn"-->
 
@@ -31,38 +31,29 @@
       <!--class="progress"-->
     </div>
     <!--class="container"-->
-    <audio id="audio" ref="audio" @ended="musicEnded"></audio>
+    <audio id="audio" ref="audio" @ended="playEnded"></audio>
   </div>
   <!--class="footer"-->
 </template>
 <script>
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 export default {
   computed: {
-    playing() {
-      return this.$store.getters.getStatus === "playing";
-    },
-    mode() {
-      return this.$store.getters.getMode;
-    }
+    ...mapState({ mode: state => state.control.mode }),
+    ...mapGetters(["playing"])
   },
   methods: {
-    musicEnded() {
-      this.$store.dispatch("playEnded");
-    },
-    togglePlay() {
-      this.$store.dispatch("playToggle");
-    },
-    nextPlay() {
-      this.$store.dispatch("playNext");
-    },
-    prevPlay() {
-      this.$store.dispatch("playPrev");
-    },
-    toggleMode() {
-      this.$store.dispatch("modeToggle");
-    }
+    ...mapMutations([]),
+    ...mapActions([
+      "playEnded",
+      "playToggle",
+      "playNext",
+      "playPrev",
+      "modeToggle"
+    ])
   },
   mounted() {
+    this.$store.dispatch("iniMusicList");
     this.$store.dispatch("attachPlayer", this.$refs.audio);
   },
   beforeDestroy() {

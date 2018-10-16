@@ -3,38 +3,38 @@
   <div class="music-list data-box">
     <div class="list-item list-head"> <span class="music-album"> 专辑 </span> <span class="auth-name"> 歌手 </span> <span class="music-name"> 歌曲 </span></div>
 
-    <div v-for="(item, index) in mlist" :key="item.id" class="list-item" data-no="index">
+    <div v-for="(item, index) in musicList" :key="item.id" class="list-item">
       <span class="list-num">{{index + 1}}</span>
       <span class="list-mobile-menu"></span>
       <span class="music-album">{{item.album}}</span>
       <span class="auth-name">{{item.artist}}</span>
       <span class="music-name">
         <span class="music-name-cult">{{item.name}}</span>
-        <div class="list-menu" data-no="0">
-          <span class="list-icon icon-play" data-function="play" title="点击播放这首歌"></span>
-          <span class="list-icon icon-download" data-function="download" title="点击下载这首歌"></span>
-          <span class="list-icon icon-share" data-function="share" title="点击分享这首歌"></span>
+        <div class="list-menu">
+          <span class="list-icon icon-play" @click="playMusic(index)" title="点击播放这首歌"></span>
+          <span class="list-icon icon-download" title="点击下载这首歌"></span>
+          <span class="list-icon icon-share" title="点击分享这首歌"></span>
         </div>
       </span>
     </div>
 
-    <div v-for="(item, index) in mlist" :key="item.id+123456789" class="list-item" data-no="mlist.length + index">
-      <span class="list-num">{{mlist.length + index + 1}}</span>
-      <span class="list-mobile-menu"></span>
-      <span class="music-album">{{item.album}}</span>
-      <span class="auth-name">{{item.artist}}</span>
-      <span class="music-name">{{item.name}}</span>
-    </div>
-
-    <div class="list-item text-center list-clickable" id="list-foot" onclick="clearDislist();">清空列表</div>
+    <div class="list-item text-center list-clickable" @click="clearMusics">清空列表</div>
   </div>
 </template>
 <script>
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 export default {
-  data() {
-    return {
-      mlist: this.$store.state.music.musicList //歌曲列表
-    };
+  computed: {
+    ...mapState({
+      musicList: state => state.music.musicList
+    })
+  },
+  methods: {
+    ...mapMutations(["clearMusics"]),
+    ...mapActions([]),
+    playMusic(index) {
+      this.$store.dispatch("playStart", this.$store.getters.getMusic(index));
+    }
   }
 };
 </script>
@@ -47,6 +47,7 @@ export default {
   top: 10px;
   bottom: 10px;
   overflow-y: auto;
+  text-align: left;
 }
 
 /*以下是播放列表 css 样式*/
@@ -206,5 +207,6 @@ export default {
 /* 列表中可以被点击的横条 */
 .list-clickable {
   cursor: pointer;
+  text-align: center;
 }
 </style>

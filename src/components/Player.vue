@@ -4,25 +4,24 @@
     <!--歌曲封面-->
     <div class="cover">
       <img src="~assets/player_cover.png" class="music-cover" id="music-cover">
-            </div>
-      <!--滚动歌词-->
-      <div class="lyric">
-        <ul id="lyric">
-          <li v-for="(value,key,index) in lyric" :key="index" data-no="index" class="lrc-item">
-            <p v-if="value===''">&nbsp;</p>
-            <p v-else>{{value}}</p>
-          </li>
-        </ul>
-      </div>
-      <div id="music-info" title="点击查看歌曲信息"></div>
     </div>
+    <!--滚动歌词-->
+    <div class="lyric">
+      <ul id="lyric">
+        <li v-for="(value,key,index) in lyric" :key="index" data-no="index" class="lrc-item">
+          <p v-if="value===''">&nbsp;</p>
+          <p v-else>{{value}}</p>
+        </li>
+      </ul>
+    </div>
+    <div id="music-info" title="点击查看歌曲信息"></div>
+  </div>
 </template>
 <script>
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 export default {
-  data() {
-    return {
-      lyric: this.$store.state.player.lyric
-    };
+  computed: {
+    ...mapState({ lyric: state => state.player.lyric })
   }
 };
 </script>
