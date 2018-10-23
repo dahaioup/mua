@@ -3,12 +3,12 @@
   <div class="player" id="player">
     <!--歌曲封面-->
     <div class="cover">
-      <img src="~assets/player_cover.png" class="music-cover" id="music-cover">
+      <img :src="cover" class="music-cover" id="music-cover">
     </div>
     <!--滚动歌词-->
     <div class="lyric">
       <ul id="lyric">
-        <li v-for="(value,key,index) in lyric" :key="index" data-no="index" class="lrc-item">
+        <li v-for="(value,key,index) in lyric" :key="index" class="lrc-item lplaying">
           <p v-if="value===''">&nbsp;</p>
           <p v-else>{{value}}</p>
         </li>
@@ -21,7 +21,10 @@
 import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapState({ lyric: state => state.player.lyric })
+    ...mapState({
+      lyric: state => state.player.lyric,
+      cover: state => state.player.cover
+    })
   }
 };
 </script>

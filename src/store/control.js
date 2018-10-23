@@ -10,7 +10,14 @@ export default {
     mute: false //是否静音(bool)
   },
   getters: {
-    playing: state => state.status === "playing"
+    playing: state => state.status === "playing",
+    curMusic: state => state.music,
+    curIndex: state => {
+      if (state.status === "playing" && state.music) {
+        return state.music.index;
+      }
+      return -1;
+    }
   },
   mutations: {
     setAudio(state, obj) {
@@ -69,6 +76,7 @@ export default {
         dispatch("getMusicUrl", { ...state.music });
       }
       commit("setStatus", "playing");
+      dispatch("lyricUpdate");
     },
     playNext({ commit, dispatch, state, getters }) {
       if (state.music) {
@@ -81,6 +89,7 @@ export default {
         dispatch("getMusicUrl", { ...state.music });
       }
       commit("setStatus", "playing");
+      dispatch("lyricUpdate");
     },
     playPrev({ commit, state, getters }) {
       if (state.music) {
@@ -93,6 +102,7 @@ export default {
         dispatch("getMusicUrl", { ...state.music });
       }
       commit("setStatus", "playing");
+      dispatch("lyricUpdate");
     },
     playEnded({ dispatch, state, getters }) {
       //模式:列表循环(list)，随机播放(random)，单曲循环(single)
@@ -116,6 +126,7 @@ export default {
         if (!state.music.url) {
           dispatch("getMusicUrl", { ...state.music });
         }
+        dispatch("lyricUpdate");
       }
       commit("setStatus", "");
     },

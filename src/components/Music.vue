@@ -3,7 +3,7 @@
   <div class="music-list data-box">
     <div class="list-item list-head"> <span class="music-album"> 专辑 </span> <span class="auth-name"> 歌手 </span> <span class="music-name"> 歌曲 </span></div>
 
-    <div v-for="(item, index) in musicList" :key="item.id" class="list-item">
+    <div v-for="(item, index) in musicList" :key="item.id" class="list-item" :class="{'list-playing':curIndex==index}">
       <span class="list-num">{{index + 1}}</span>
       <span class="list-mobile-menu"></span>
       <span class="music-album">{{item.album}}</span>
@@ -27,7 +27,8 @@ export default {
   computed: {
     ...mapState({
       musicList: state => state.music.musicList
-    })
+    }),
+    ...mapGetters(["curIndex"])
   },
   methods: {
     ...mapMutations(["clearMusics"]),

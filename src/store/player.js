@@ -1,69 +1,60 @@
+import fetch from "common/fetch.js";
+import player_cover from "assets/player_cover.png";
+// 解析歌词
+// 这一函数来自 https://github.com/TivonJJ/html5-music-player
+// 参数：原始歌词文件
+const parseLyric = lrc => {
+  if (lrc === "") return "";
+  var lyrics = lrc.split("\n");
+  var lrcObj = {};
+  for (var i = 0; i < lyrics.length; i++) {
+    var lyric = decodeURIComponent(lyrics[i]);
+    var timeReg = /\[\d*:\d*((\.|\:)\d*)*\]/g;
+    var timeRegExpArr = lyric.match(timeReg);
+    if (!timeRegExpArr) continue;
+    var clause = lyric.replace(timeReg, "");
+    for (var k = 0, h = timeRegExpArr.length; k < h; k++) {
+      var t = timeRegExpArr[k];
+      var min = Number(String(t.match(/\[\d*/i)).slice(1)),
+        sec = Number(String(t.match(/\:\d*/i)).slice(1));
+      var time = min * 60 + sec;
+      lrcObj[time] = clause;
+    }
+  }
+  return lrcObj;
+};
+
 //播放器
 export default {
   state: {
-    music: -1, //当前歌曲
     //歌词{time: context}
-    lyric: {
-      18: "幽静窗外满地片片寒花",
-      24: "一瞬间永恒的时差",
-      29: "窝在棉被里",
-      35: "倾听踏雪听沈默的声音",
-      42: "飘雪藏永恒的身影",
-      47: "雪树下等你",
-      48: "",
-      53: "在一瞬间有一百万个可能",
-      56: "该向前走或者继续等",
-      60: "这冬夜里有百万个不确定",
-      64: "渐入深夜或期盼天明",
-      69: "云空的泪一如冰凌结晶了",
-      75: "成雪花垂",
-      78: "这一瞬间有一百万个可能",
-      81: "窝进棉被或面对寒冷",
-      88: "",
-      105: "幽静寒风吹来一缕声音",
-      111: "一瞬间看着你走近",
-      116: "暖了我冬心",
-      122: "倾听踏雪听沈默的声音",
-      129: "飘雪藏永恒的身影",
-      134: "雪树下等你",
-      136: "",
-      139: "在一瞬间有一百万个可能",
-      143: "该向前走或者继续等",
-      147: "这冬夜里有百万个不确定",
-      152: "渐入深夜或期盼天明",
-      156: "云空的泪一如冰凌结晶了",
-      163: "成雪花垂",
-      165: "这一瞬间有一百万个可能",
-      169: "窝进棉被或面对寒冷",
-      175: "",
-      193: "那晚上会是哪个瞬间",
-      195: "说好的爱会不会改变",
-      197: "而你让我徘徊在千里之外",
-      198: "yeah你让我等了好久baby",
-      201: "突然间那是哪个瞬间",
-      203: "你终於出现就是那个瞬间",
-      205: "等了好久忍不住伸手那个瞬间",
-      208: "",
-      209: "在一瞬间有一百万个可能",
-      213: "该向前走或者继续等",
-      217: "这深夜里有百万个不确定",
-      222: "渐入冬林或走向街灯",
-      226: "云空的泪一如冰凌结晶了",
-      233: "成雪花垂",
-      235: "",
-      236: "这一瞬间有一百万个可能",
-      239: "暖这冬心或面对寒冷",
-      243: "该向前走或者继续等",
-      248: "渐入冬林或走向街灯",
-      252: "窝进棉被或面对寒冷",
-      256: "暖这冬心或面对寒冷",
-      264: ""
-    },
+    lyric: {},
     index: -1, //歌词当前行
     duration: 50, //歌曲总时长
     ctime: false, //当前播放时间
-    cover: "" //封面
+    cover: player_cover //封面
   },
   getters: {},
-  mutations: {}
+  mutations: {
+    setLyric(state, obj) {
+      state.lyric = obj;
+    },
+    setCover(state, obj) {
+      if (obj.length < 5) {
+        obj = player_cover;
+      }
+      console.log(obj);
+      state.cover = obj;
+    }
+  },
+  actions: {
+    lyricUpdate({ commit, getters }) {
+      let obj = getters.curMusic;
+      commit("setCover", obj.pic);
+      fetch({ types: "lyric", id: obj.id, source: obj.source }, data => {
+        commit("setLyric", parseLyric(data.lyric));
+        console.log(this.state.player.lyric);
+      });
+    }
+  }
 };
