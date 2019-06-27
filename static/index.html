@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+        font-family: "微软雅黑";
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      #header {
+        height: 100px;
+        border: solid 1px red;
+        margin: 0px auto;
+      }
+
+      #main {
+        margin: 0 auto;
+        height: 400px;
+      }
+
+      #footer {
+        margin: 0px auto;
+        height: 100px;
+        border: solid 1px red;
+      }
+      @media screen and (min-width: 900px) /*这个意思就是最小宽度为900的机器 也就是我们通俗所说的PC端*/ {
+        #header,
+        #footer {
+          width: 100%;
+        }
+
+        #main {
+          width: 100%;
+          height: 400px;
+        }
+
+        #main-left {
+          width: 20%;
+          height: 100%;
+          border: solid 1px red;
+          float: left; /*以下均要设置左浮动，保证在同一行*/
+        }
+
+        #main-center {
+          width: 39%;
+          height: 100%;
+          border: solid 1px red;
+          float: left;
+        }
+
+        #main-right {
+          width: 40%;
+          height: 100%;
+          border: solid 1px red;
+          float: left;
+        }
+      }
+      /*分辨率在600~900*/
+      @media screen and (min-width: 600px) and (max-width: 900px) {
+        #header,
+        #footer {
+          width: 600px;
+        }
+        #main {
+          width: 600px;
+          height: calc(100% - 206px) /* 400px */;
+          border: solid 1px red;
+        }
+        #main-left {
+          width: 200px;
+          height: 100%;
+          border-right: solid 1px red;
+          float: left; /*以下均要设置左浮动，保证在同一行*/
+        }
+        #main-center {
+          width: 399px;
+          height: 100%;
+          float: left;
+        }
+        #main-right {
+          display: none; /*隐藏内容右边*/
+        }
+      }
+      /*手机*/
+      @media screen and (max-width: 600px) {
+        #header,
+        #footer {
+          width: 300px;
+        }
+        #main {
+          width: 300px;
+          height: 400px;
+        }
+        #main-left {
+          display: none; /*隐藏内容左边*/
+        }
+        #main-center {
+          width: 300px;
+          height: 100%;
+          border: solid 1px red;
+        }
+        #main-right {
+          display: none; /*隐藏内容右边*/
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">头部</div>
+    <div id="main">
+      <div id="main-left">内容-左边</div>
+      <div id="main-center">内容-中间</div>
+      <div id="main-right">内容-右边</div>
+    </div>
+    <div id="footer">底部</div>
+  </body>
+</html>
